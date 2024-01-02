@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import ru.kayashov.familyfinance.controller.dto.EventRequestDto;
 import ru.kayashov.familyfinance.entities.EventEntity;
 import ru.kayashov.familyfinance.service.EventService;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/event")
 @RequiredArgsConstructor
@@ -26,11 +28,17 @@ public class EventController {
 
     private final EventService service;
 
-    @GetMapping("/all")
-    public List<EventDto> getAll(@RequestParam("start") String startDate,
-                                 @RequestParam("end") String endDate) {
+    @GetMapping("/changeAll")
+    public List<EventDto> getAll(@RequestParam("start") Long startDate,
+                                 @RequestParam("end") Long endDate) {
         return service.getAll(startDate, endDate);
     }
+
+    @GetMapping("/all")
+    public List<EventDto> getAll() {
+        return service.getAll();
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {

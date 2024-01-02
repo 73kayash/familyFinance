@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import {ButtonMonth} from "../Monitor/MonitorStyle";
 
 export const Cell = styled.div`
-    min-width: 70px;
-    min-height: 40px;
+    min-width: 140px;
+    min-height: 80px;
     background-color: ${props => (props.weekend ? props.weekend : undefined) ? '#272829' : '#1e1f21'};
     color: #dddcdd;
 `;
@@ -13,8 +14,8 @@ export const Row = styled.div`
 `;
 
 export const Day = styled.div`
-    height: 17px;
-    width: 17px;
+    height: 33px;
+    width: 33px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,4 +33,16 @@ export const CurrentDay = styled(Day)`
 
 export const WithoutDay = styled(Day)`
     color: #5d5d5d;
+`
+
+export const Event = styled(ButtonMonth)`
+    display: flex;
+    justify-content: flex-start;
+    background: ${(props) => props.sum > 0 ? '#0e510e' : '#510e18'};
+    color: #cdcdcd;
+    display: inline-flex;
+    margin-left: 7px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 6px;
 `

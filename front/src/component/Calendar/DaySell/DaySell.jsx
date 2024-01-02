@@ -1,12 +1,9 @@
-import { Cell } from "./DayStyle"
-import { Row } from "./DayStyle"
-import { Day } from "./DayStyle"
+import {Cell, CurrentDay, Day, Row, WithoutDay} from "./DayStyle"
 import moment from "moment"
-import { CurrentDay } from "./DayStyle"
-import { WithoutDay } from "./DayStyle"
+import {Event} from "./DayStyle";
 
-function isCurrentDay(day) {    
-    if(moment().isSame(day, 'day')) {
+function isCurrentDay(day) {
+    if (moment().isSame(day, 'day')) {
         return (
             <CurrentDay>{day.format('D')}</CurrentDay>
         );
@@ -16,7 +13,7 @@ function isCurrentDay(day) {
 }
 
 function isWithoutDay(day, currentDay) {
-    if(currentDay.isSame(day, 'month')) {
+    if (currentDay.isSame(day, 'month')) {
         return (
             <Day>
                 {isCurrentDay(day)}
@@ -31,12 +28,22 @@ function isWithoutDay(day, currentDay) {
     }
 }
 
-export function DaySell({day, currentDay}) {
+function createEvent(event, day) {
+    const date = moment(event.date);
+    if (date.isSame(day, 'day')) {
+        return (
+            <Row><Event sum={event.sum}>{event.name}</Event></Row>
+        )
+    }
+}
+
+export function DaySell({day, currentDay, events}) {
     return (
         <Cell weekend={day.day() === 6 || day.day() === 0}>
             <Row justify={'flex-end'}>
                 {isWithoutDay(day, currentDay)}
             </Row>
+            {events.map((eventItem) => createEvent(eventItem, day))}
         </Cell>
     )
 }

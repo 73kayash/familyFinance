@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Cell } from '../DaySell/DayStyle';
 
-export const CallendarGrid = styled.div`
+export const CalendarGrid = styled('div')`
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             grid-template-rows: repeat(6, 1fr);
@@ -9,7 +9,7 @@ export const CallendarGrid = styled.div`
             background-color: #494848;
 `;
 
-export const HeaderGrid = styled(CallendarGrid)`
+export const HeaderGrid = styled(CalendarGrid)`
     grid-gap: 0px;
     grid-template-rows: 1fr;
     padding-bottom: 1px;

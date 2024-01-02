@@ -1,25 +1,29 @@
+// noinspection JSUnresolvedVariable
+
 import styled from 'styled-components';
 import {ButtonMonth} from "../Monitor/MonitorStyle";
 
-export const Cell = styled.div`
+export const Cell = styled('div')`
     min-width: 140px;
     min-height: 80px;
-    background-color: ${props => (props.weekend ? props.weekend : undefined) ? '#272829' : '#1e1f21'};
+    background-color: ${(props) => (props.weekend ? props.weekend === 'true' : undefined) ? '#272829' : '#1e1f21'};
     color: #dddcdd;
 `;
 
-export const Row = styled.div`
+export const Row = styled('div')`
     display: flex;
-    justify-content: ${props => props.justify ? props.justify : 'flex-start'};
+    justify-content: ${(props) => props.justify ? props.justify : 'flex-start'};
 `;
 
-export const Day = styled.div`
+export const Day = styled('div')`
     height: 33px;
     width: 33px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2px
+    margin: 2px;
+    cursor: pointer;
+    user-select: none;
 `;
 
 export const CurrentDay = styled(Day)`
@@ -45,4 +49,5 @@ export const Event = styled(ButtonMonth)`
     padding-left: 3px;
     padding-right: 3px;
     border-radius: 6px;
+    cursor: pointer;
 `

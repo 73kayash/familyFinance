@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Cell } from '../DaySell/DayStyle';
+import {CellProps} from '../DaySell/DayStyle';
 
 export const CalendarGrid = styled('div')`
             display: grid;
@@ -15,7 +15,7 @@ export const HeaderGrid = styled(CalendarGrid)`
     padding-bottom: 1px;
 `
 
-export const HeaderCell = styled(Cell)`
+export const HeaderCell = styled(CellProps)`
     min-height: 12px;
     display: flex;
     justify-content: end;

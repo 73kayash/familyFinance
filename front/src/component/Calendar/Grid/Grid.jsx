@@ -15,40 +15,64 @@ export function Grid({currentDay}) {
     const [events, setEvents] = useState([]);
     const [event, setEvent] = useState(null);
     const [eventFormIsVisible, setEventFormIsVisible] = useState(false);
-
+    // getEvents
     useEffect(() => {
         fetch(`${url}event/changeAll?start=${startDay.format('X')}&end=${queryEnd.format('X')}`)
             .then(res => res.json())
             .then(res => setEvents(res));
     }, [currentDay])
+    // Обработчик открытия модального окна
     const eventHandler = (item) => {
-        console.log(item);
-        setEvent(item);
+        item != null ? (item.sum != null ? setEvent(item) : setEvent({
+            id: null,
+            name: "",
+            sum: "",
+            date: item.format('yyyy-MM-DD')
+        })) : setEvent(null);
         setEventFormIsVisible(!eventFormIsVisible);
     };
+    // Обработчик изменения текста в полях модального окна
     const changeTextHandler = (text, field) => {
         setEvent(prevState => ({
             ...prevState,
             [field]: text
         }))
     }
+    // Обработчик обновления\сохранения новых значений
+    const fetchHandler = () => {
+        const fetchUrl = event.id ? `${url}/event/${event.id}` : `${url}/event/new`
+        const httpMethod = event.id ? "patch" : "post";
+        console.log(fetchUrl);
+        console.log(httpMethod);
+        console.log(event);
+        // fetch(fetchUrl, {
+        //     method: httpMethod,
+        //     headers: {
+        //         'Content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify(event)
+        // })
+        //     .then(res => res.json())
+        //     .then(res => console.log(res))
+    }
+
     return (
         <>
-            {<EventForm
-                formVisible={eventFormIsVisible}
+            {eventFormIsVisible ? <EventForm
                 event={event}
                 eventHandler={eventHandler}
                 changeTextHandler={changeTextHandler}
-            />}
+                fetchHandler={fetchHandler}
+            /> : null}
             <HeaderGrid>
                 {weekDays.map((self) => <HeaderCell key={self}>{self}</HeaderCell>)}
             </HeaderGrid>
             <CalendarGrid>
                 {
-                    days.map((_) => (
+                    days.map((day) => (
                         <DaySell
-                            key={_.format('X')}
-                            day={_}
+                            key={day.format('X')}
+                            day={day}
                             currentDay={currentDay}
                             events={events}
                             eventHandler={eventHandler}

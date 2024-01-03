@@ -3,7 +3,6 @@ import moment from "moment";
 import {Grid} from '../Calendar/Grid/Grid';
 import {Calendar} from './AppStyle';
 import {Monitor} from '../Calendar/Monitor/Monitor';
-import {Title} from '../Calendar/Title/Title';
 import {useState} from 'react';
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
             "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
         ]
     });
-    window.moment = moment();
     const [today, setToday] = useState(moment());
 
     const prevHandler = () => setToday(prev => prev.clone().subtract(1, 'month'));
@@ -25,7 +23,6 @@ function App() {
     return (
         <Calendar>
             {/* <Header /> */}
-            <Title/>
             <Monitor
                 today={today}
                 prevHandler={prevHandler}

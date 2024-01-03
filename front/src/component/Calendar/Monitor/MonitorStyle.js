@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const MonitorDiv = styled.div`
+export const MonitorDiv = styled('div')`
     display: flex;
     justify-content: space-between;
     background-color: #1E1F21;
@@ -8,7 +8,7 @@ export const MonitorDiv = styled.div`
     padding: 16px;
 `
 
-export const MonthYear = styled.span`
+export const MonthYear = styled('span')`
     font-size: 32px;
 `
 

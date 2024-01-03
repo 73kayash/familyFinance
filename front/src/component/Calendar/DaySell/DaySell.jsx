@@ -1,54 +1,29 @@
-import {Cell, CurrentDay, Day, Event, Row, WithoutDay} from "./DayStyle"
+import {CellProps, DayProps, Event, NumberRow, Row} from "./DayStyle"
 import moment from "moment"
 
-function isCurrentDay(day) {
-    if (moment().isSame(day, 'day')) {
-        return (
-            <CurrentDay>{day.format('D')}</CurrentDay>
-        );
-    } else {
-        return day.format('D');
-    }
-}
-
-function isWithoutDay(day, currentDay, eventHandler) {
-    if (currentDay.isSame(day, 'month')) {
-        return (
-            <Day onClick={() => eventHandler(day)}>
-                {isCurrentDay(day)}
-            </Day>
-        )
-    } else {
-        return (
-            <WithoutDay>
-                {isCurrentDay(day)}
-            </WithoutDay>
-        )
-    }
-}
-
-function createEvent(event, day, handler) {
-    const date = moment(event.date);
-    if (date.isSame(day, 'day')) {
-        return (
-            <Row key={event.id}>
-                <Event
-                    key={event.id + day.format('X')}
-                    sum={event.sum}
-                    onClick={() => handler(event)}>{event.name}
-                </Event>
-            </Row>
-        )
-    }
-}
-
 export function DaySell({day, currentDay, events, eventHandler}) {
+    const weekend = day.day() === 6 || day.day() === 0;
+    const anotherMonth = !day.isSame(currentDay, 'month');
+    const isCurrentDay = moment().isSame(day, 'day');
+    const displayedDay = day.format('D');
+    const cellDayEvents = events.filter((eventItem) => moment(eventItem.date).isSame(day, 'day'));
     return (
-        <Cell weekend={day.day() === 6 || day.day() === 0}>
-            <Row justify={'flex-end'}>
-                {isWithoutDay(day, currentDay, eventHandler)}
-            </Row>
-            {events.map((eventItem) => createEvent(eventItem, day, eventHandler))}
-        </Cell>
+        <CellProps $isWeekend={weekend}>
+            <NumberRow>
+                <DayProps $anotherMonth={anotherMonth} $currentDay={false} onClick={() => eventHandler(day)}>
+                    {isCurrentDay ? <DayProps $anotherMonth={false} $currentDay={true}>{displayedDay}</DayProps> : displayedDay}
+                </DayProps>
+            </NumberRow>
+            {cellDayEvents.map((eventItem) => {return (
+                <Row key={eventItem.id}>
+                    <Event
+                        key={eventItem.id + day.format('X')}
+                        $sum={eventItem.sum > 0}
+                        onClick={() => eventHandler(eventItem)}>
+                        {eventItem.name}
+                    </Event>
+                </Row>)})
+            }
+        </CellProps>
     )
 }

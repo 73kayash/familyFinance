@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kayashov.familyfinance.controller.dto.EventDto;
 import ru.kayashov.familyfinance.controller.dto.EventRequestDto;
-import ru.kayashov.familyfinance.entities.EventEntity;
 import ru.kayashov.familyfinance.service.EventService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -39,7 +38,6 @@ public class EventController {
         return service.getAll();
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         return ResponseEntity.ofNullable(service.get(id));
@@ -47,9 +45,8 @@ public class EventController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Long createEvent(@RequestBody EventRequestDto dto) {
-        EventEntity entity = service.create(dto);
-        return entity.getId();
+    public EventDto createEvent(@RequestBody EventRequestDto dto) {
+        return service.create(dto);
     }
 
     @PatchMapping("/{id}")

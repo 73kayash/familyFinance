@@ -37,9 +37,10 @@ public class EventService {
         return mapper.toDtoList(entities);
     }
 
-    public EventEntity create(EventRequestDto dto) {
+    public EventDto create(EventRequestDto dto) {
         EventEntity entity = mapper.toEntity(dto);
-        return repository.save(entity);
+        entity = repository.save(entity);
+        return mapper.toDto(entity);
     }
 
     public EventDto get(Long id) {

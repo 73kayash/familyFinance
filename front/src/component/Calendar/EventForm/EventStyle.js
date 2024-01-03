@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Calendar} from "../App/AppStyle";
+import {Calendar} from "../../App/AppStyle";
 
 export const EventFormStyle = styled('div')`
     position: absolute;
@@ -59,14 +59,18 @@ export const EventInput = styled('input')`
     max-width: 65%;
 `
 
-export const EventButton = styled('button')`
+export const EventButton = styled('button').attrs((props) => ({
+    $isDeleted: props.$isDeleted
+}))`
     height: 36px;
-    color: #dddddd;
+    color: ${(props) => props.$isDeleted ? '#e00' : '#dddddd'};
     background: #1e1f21;
     outline: unset;
     border: solid 3px #464648;
     border-radius: 12px;
     cursor: pointer;
+    margin-left: 9px;
+    
 `
 
 export const EventRow = styled('div')`

@@ -9,7 +9,7 @@ import {
     EventTitle
 } from "./EventStyle";
 
-export function EventForm({event, eventHandler, changeTextHandler, fetchHandler}) {
+export function EventForm({event, eventHandler, changeTextHandler, fetchHandler, deleteHandler}) {
     const isEvent = !!event.id;
     const title = event.sum != null ? event.date : event.format('yyyy-MM-DD');
     const sum = event.sum ? event.sum : "";
@@ -35,8 +35,19 @@ export function EventForm({event, eventHandler, changeTextHandler, fetchHandler}
                         />
                     </EventRow>
                 </EventBody>
-                <EventFooter><EventButton
-                    onClick={fetchHandler}>{isEvent ? 'Обновить' : 'Сохранить'}</EventButton></EventFooter>
+                <EventFooter>
+                    {isEvent ?
+                        <EventButton
+                            $isDeleted={true}
+                            onClick={deleteHandler}>
+                            Удалить
+                        </EventButton>
+                        : null
+                    }
+                    <EventButton
+                        onClick={fetchHandler}>{isEvent ? 'Обновить' : 'Сохранить'}
+                    </EventButton>
+                </EventFooter>
             </EventContent>
         </EventFormStyle>
     )

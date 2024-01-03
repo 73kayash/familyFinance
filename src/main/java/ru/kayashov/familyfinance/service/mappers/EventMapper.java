@@ -17,7 +17,6 @@ public interface EventMapper {
 
     EventEntity toEntity(EventRequestDto dto);
 
-    @Mapping(target = "id", source = "dto.id")
     @Mapping(target = "date", source = "dto.date")
     @Mapping(target = "sum", source = "dto.sum")
     @Mapping(target = "name", source = "dto.name")

@@ -13,6 +13,7 @@ export const CellProps = styled('div').attrs((props) => ({
 export const Row = styled('div')`
     display: flex;
     justify-content: flex-start;
+    padding: 1px;
 `;
 
 export const NumberRow = styled(Row)`

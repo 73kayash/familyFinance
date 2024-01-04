@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {ButtonMonth} from "../Monitor/MonitorStyle";
 
-export const CellProps = styled('div').attrs((props) => ({
+export const Cell = styled('div').attrs((props) => ({
     $isWeekend: props.$isWeekend
 }))`
   min-width: 140px;
@@ -20,10 +20,11 @@ export const NumberRow = styled(Row)`
     justify-content: flex-end;
 `
 
-export const DayProps = styled('div').attrs((props) => ({
-    $anotherMonth: props.$anotherMonth && 'color: #5d5d5d',
+export const Day = styled('div').attrs((props) => ({
+    $isNotWorkDay: props.$isNotWorkDay,
+    $anotherMonth: props.$isNotWorkDay ? 'color: #f14949' : props.$anotherMonth && 'color: #5d5d5d',
     $currentDay: props.$currentDay &&
-        'background: #f00;' +
+        'background: #510e18;' +
         '\nborder-radius: 50%;' +
         '\nheight: 100%;' +
         '\nwidth: 100%;' +

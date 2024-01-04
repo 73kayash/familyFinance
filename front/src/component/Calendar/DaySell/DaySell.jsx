@@ -1,29 +1,43 @@
-import {CellProps, DayProps, Event, NumberRow, Row} from "./DayStyle"
+import {Cell, Day, Event, NumberRow, Row} from "./DayStyle"
 import moment from "moment"
 
-export function DaySell({day, currentDay, events, eventHandler}) {
+export function DaySell({day, currentDay, events, eventHandler, isNotWorkDay}) {
     const weekend = day.day() === 6 || day.day() === 0;
     const anotherMonth = !day.isSame(currentDay, 'month');
     const isCurrentDay = moment().isSame(day, 'day');
     const displayedDay = day.format('D');
     const cellDayEvents = events.filter((eventItem) => moment(eventItem.date).isSame(day, 'day'));
+
     return (
-        <CellProps $isWeekend={weekend}>
+        <Cell $isWeekend={weekend}>
             <NumberRow>
-                <DayProps $anotherMonth={anotherMonth} $currentDay={false} onClick={() => eventHandler(day)}>
-                    {isCurrentDay ? <DayProps $anotherMonth={false} $currentDay={true}>{displayedDay}</DayProps> : displayedDay}
-                </DayProps>
+                <Day
+                    $anotherMonth={anotherMonth}
+                    $isNotWorkDay={isNotWorkDay}
+                    $currentDay={false}
+                    onClick={() => eventHandler(day)}>
+                    {isCurrentDay
+                        ? <Day
+                            $anotherMonth={false}
+                            $currentDay={true}
+                            $isNotWorkDay={isNotWorkDay}
+                        >{displayedDay}</Day>
+                        : displayedDay}
+                </Day>
             </NumberRow>
-            {cellDayEvents.map((eventItem) => {return (
-                <Row key={eventItem.id}>
-                    <Event
-                        key={eventItem.id + day.format('X')}
-                        $sum={eventItem.sum > 0}
-                        onClick={() => eventHandler(eventItem)}>
-                        {eventItem.name}
-                    </Event>
-                </Row>)})
+            {cellDayEvents.map((eventItem) => {
+                return (
+                    <Row key={eventItem.id}>
+                        <Event
+                            key={eventItem.id + day.format('X')}
+                            title={eventItem.sum + " р."}
+                            $sum={eventItem.sum > 0}
+                            onClick={() => eventHandler(eventItem)}>
+                            {eventItem.name}
+                        </Event>
+                    </Row>)
+            })
             }
-        </CellProps>
+        </Cell>
     )
 }

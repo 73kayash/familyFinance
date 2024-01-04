@@ -1,13 +1,4 @@
-import {
-    EventBody,
-    EventButton,
-    EventContent,
-    EventFooter,
-    EventFormStyle,
-    EventInput,
-    EventRow,
-    EventTitle
-} from "./EventStyle";
+import {EventBody, EventButton, EventContent, EventFormStyle, EventInput, EventRow, EventTitle} from "./EventStyle";
 
 export function EventForm({event, eventHandler, changeTextHandler, fetchHandler, deleteHandler}) {
     const isEvent = !!event.id;
@@ -21,33 +12,33 @@ export function EventForm({event, eventHandler, changeTextHandler, fetchHandler,
                 <EventTitle><h2>{title}</h2></EventTitle>
                 <EventBody>
                     <EventRow>
-                        <p>Название</p>
                         <EventInput
                             value={name}
+                            placeholder="Название"
                             onChange={e => changeTextHandler(e.target.value, 'name')}
                         />
                     </EventRow>
                     <EventRow>
-                        <p>Сумма</p>
                         <EventInput
                             value={sum}
+                            placeholder="Сумма"
                             onChange={e => changeTextHandler(e.target.value, 'sum')}
                         />
                     </EventRow>
-                </EventBody>
-                <EventFooter>
-                    {isEvent ?
+                    <EventRow>
+                        {isEvent ?
+                            <EventButton
+                                $isDeleted={true}
+                                onClick={deleteHandler}>
+                                Удалить
+                            </EventButton>
+                            : null
+                        }
                         <EventButton
-                            $isDeleted={true}
-                            onClick={deleteHandler}>
-                            Удалить
+                            onClick={fetchHandler}>{isEvent ? 'Обновить' : 'Сохранить'}
                         </EventButton>
-                        : null
-                    }
-                    <EventButton
-                        onClick={fetchHandler}>{isEvent ? 'Обновить' : 'Сохранить'}
-                    </EventButton>
-                </EventFooter>
+                    </EventRow>
+                </EventBody>
             </EventContent>
         </EventFormStyle>
     )

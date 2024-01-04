@@ -15,11 +15,20 @@ export function Grid({currentDay}) {
     const [events, setEvents] = useState([]);
     const [event, setEvent] = useState(null);
     const [eventFormIsVisible, setEventFormIsVisible] = useState(false);
+    const [workDaysString, setWorkDays] = useState([])
     // getEvents
     useEffect(() => {
         fetch(`${url}/event/changeAll?start=${startDay.format('X')}&end=${queryEnd.format('X')}`)
             .then(res => res.json())
             .then(res => setEvents(res));
+
+        fetch(`https://isdayoff.ru/api/getData?date1=${startDay.format('yyyyMMDD')}&date2=${queryEnd.format('yyyyMMDD')}&delimeter=,`, {
+            method: 'GET',
+            redirect: 'follow'
+        })
+            .then(response => response.text())
+            .then(result => setWorkDays(result.split(",")))
+            .catch(error => console.log('error', error));
     }, [currentDay])
     // Обработчик открытия модального окна
     const eventHandler = (item) => {
@@ -86,13 +95,14 @@ export function Grid({currentDay}) {
             </HeaderGrid>
             <CalendarGrid>
                 {
-                    days.map((day) => (
+                    days.map((day, index) => (
                         <DaySell
                             key={day.format('X')}
                             day={day}
                             currentDay={currentDay}
                             events={events}
                             eventHandler={eventHandler}
+                            isNotWorkDay={workDaysString[index] === "1"}
                         />
                     ))
                 }

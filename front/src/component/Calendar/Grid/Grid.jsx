@@ -15,7 +15,7 @@ export function Grid({currentDay}) {
     const [events, setEvents] = useState([]);
     const [event, setEvent] = useState(null);
     const [eventFormIsVisible, setEventFormIsVisible] = useState(false);
-    const [workDaysString, setWorkDays] = useState([])
+    const [workDaysString, setWorkDays] = useState([]);
     // getEvents
     useEffect(() => {
         fetch(`${url}/event/changeAll?start=${startDay.format('X')}&end=${queryEnd.format('X')}`)
@@ -38,7 +38,7 @@ export function Grid({currentDay}) {
             sum: "",
             date: item.format('yyyy-MM-DD')
         })) : setEvent(null);
-        setEventFormIsVisible(!eventFormIsVisible);
+        setEventFormIsVisible(item != null);
     };
     // Обработчик изменения текста в полях модального окна
     const changeTextHandler = (text, field) => {
@@ -80,6 +80,14 @@ export function Grid({currentDay}) {
                 eventHandler(null);
             })
     }
+    const startDragHandler = (dragItem) => {
+        setEvent(dragItem);
+    }
+    const dropEventHandler = (e, day) => {
+        e.preventDefault();
+        event.date = day.format('yyyy-MM-DD');
+        fetchHandler();
+    }
 
     return (
         <>
@@ -103,6 +111,8 @@ export function Grid({currentDay}) {
                             events={events}
                             eventHandler={eventHandler}
                             isNotWorkDay={workDaysString[index] === "1"}
+                            startDragHandler={startDragHandler}
+                            dropEventHandler={dropEventHandler}
                         />
                     ))
                 }

@@ -14,7 +14,7 @@ export const EventFormStyle = styled('div')`
     justify-content: center;
 `
 export const EventContent = styled(Calendar)`
-    width: 280px;
+    width: 320px;
     background-color: #1E1F21;
     color: #DDDDDD;
     box-shadow: unset;
@@ -48,22 +48,24 @@ export const EventBody = styled('div')`
     outline: unset;
 `
 
-export const EventInput = styled('input')`
-    padding: 6px 5px 2px 5px;
+export const EventInput = styled('textarea')`
+    padding: 8px 12px;
+    font-size: .85rem;
     margin: 5px;
     color: #DDDDDD;
     background: #1e1f21;
     border-radius: 12px;
-    border: solid;
     border-color: #464648;
-    max-width: 65%;
+    resize: none;
+    height: 60px;
+    width: 80%;
 `
 
 export const EventButton = styled('button').attrs((props) => ({
     $isDeleted: props.$isDeleted
 }))`
     height: 36px;
-    color: ${(props) => props.$isDeleted ? '#e00' : '#dddddd'};
+    color: ${(props) => props.$isDeleted ? '#f14949' : '#dddddd'};
     background: #1e1f21;
     outline: unset;
     border: solid 3px #464648;
@@ -75,11 +77,5 @@ export const EventButton = styled('button').attrs((props) => ({
 
 export const EventRow = styled('div')`
     display: inline-flex;
-    justify-content: space-between;
-`
-
-export const EventFooter = styled(EventTitle)`
-    justify-content: end;
-    padding-right: 17px;
-    margin-top: -7px;
+    justify-content: center;
 `

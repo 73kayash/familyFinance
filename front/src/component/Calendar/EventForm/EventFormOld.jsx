@@ -1,6 +1,6 @@
 import {EventBody, EventButton, EventContent, EventFormStyle, EventInput, EventRow, EventTitle} from "./EventStyle";
 
-export function EventForm({event, eventHandler, changeTextHandler, fetchHandler, deleteHandler}) {
+export function EventFormOld({event, eventHandler, changeTextHandler, fetchHandler, deleteHandler}) {
     const isEvent = !!event.id;
     const title = event.sum != null ? event.date : event.format('yyyy-MM-DD');
     const sum = event.sum ? event.sum : "";

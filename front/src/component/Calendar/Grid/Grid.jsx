@@ -10,7 +10,6 @@ export function Grid({currentDay}) {
     const startDay = currentDay.clone().startOf('month').startOf('week');
     const start = startDay.clone().subtract(1, 'day');
     const weeks = [...Array(6)].map(() => [...Array(7)].map(() => start.add(1, 'day').clone()));
-    // const days = [...Array(42)].map(() => start.add(1, 'day').clone());
     const queryEnd = startDay.clone().add(42, 'day');
 
     const [events, setEvents] = useState([]);

@@ -1,12 +1,6 @@
-import {Col, Form, Row, ToggleButton} from "react-bootstrap";
-import {useState} from "react";
+import {ButtonGroup, Form, Row, ToggleButton} from "react-bootstrap";
 
-export function MultiEventForm() {
-
-    const [lasDate, setLastDate] = useState(null);
-    const [changeDate, setChangeDate] = useState(false);
-    const [changeSum, setChangeSum] = useState(false);
-
+export function MultiEventForm({changeStateHandler, multiState}) {
     return (
         <div className={"bg-dark text-bg-dark p-2"}>
             <Row className={"p-2 w-50"}>
@@ -15,29 +9,24 @@ export function MultiEventForm() {
                     className={"bg-dark text-bg-dark m-2"}
                     type="date"
                     name="doj"
+                    defaultValue={multiState.lastDate}
                     placeholder="Последнее событие"
-                    onChange={(e) => {setLastDate(e.target.value)}}/>
+                    onChange={(e) => changeStateHandler('lastDate', e.target.value)}/>
             </Row>
-            {lasDate != null ?
-                <Row className={"p-2"}>
-                    <Col>
-                        <ToggleButton id="toggle-date" type="checkbox" variant="outline-secondary" checked={changeDate}
-                                      value="1" onChange={(e) => {
-                            setChangeDate(e.currentTarget.checked);
-                        }}>
-                            Изменение даты
-                        </ToggleButton>
-                    </Col>
-                    <Col>
-                        <ToggleButton id="toggle-sum" type="checkbox" variant="outline-secondary" checked={changeSum}
-                                      value="1" onChange={(e) => {
-                            setChangeSum(e.currentTarget.checked);
-                        }}>
-                            Изменение суммы
-                        </ToggleButton>
-                    </Col>
-                </Row>
-                : null}
+            <ButtonGroup vertical>
+                <ToggleButton id="toggle-date" type="checkbox" variant="outline-secondary" checked={multiState.changeDate}
+                              value="1" onChange={(e) => changeStateHandler('changeDate', e.currentTarget.checked)}>
+                    Изменение даты
+                </ToggleButton>
+                <ToggleButton id="toggle-name" type="checkbox" variant="outline-secondary" checked={multiState.changeName}
+                              value="1" onChange={(e) => changeStateHandler('changeName', e.currentTarget.checked)}>
+                    Изменение названия
+                </ToggleButton>
+                <ToggleButton id="toggle-sum" type="checkbox" variant="outline-secondary" checked={multiState.changeSum}
+                              value="1" onChange={(e) => changeStateHandler('changeSum', e.currentTarget.checked)}>
+                    Изменение суммы
+                </ToggleButton>
+            </ButtonGroup>
             <Row>
 
             </Row>

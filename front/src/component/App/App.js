@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Footer} from "../Footer/Footer";
 import {Header} from "../Header/Header";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {Calendar} from "../Calendar/Calendar";
@@ -14,7 +13,6 @@ function App() {
                     <Route exact path="/" element={<Calendar/>}/>
                     <Route path="/createEvent" element={<EventFormPage />}/>
                 </Routes>
-                <Footer/>
             </Router>
         </div>
     );

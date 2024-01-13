@@ -2,6 +2,14 @@ import {Button, Col, Form, InputGroup, Row} from "react-bootstrap";
 import moment from "moment";
 
 export function EditEventForm({event, eventIndex, inputChangeHandler, activeDate, activeName, activeSum}) {
+    moment.updateLocale('en', {
+        months: [
+            "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль",
+            "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+        ],
+        weekdaysShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+        week: {dow: 1}
+    })
 
     return (
         <Row className={"d-flex"}>
@@ -18,7 +26,7 @@ export function EditEventForm({event, eventIndex, inputChangeHandler, activeDate
                             title={event.sum + " р."}>
                             {event.name}
                         </Button> : null}</Col>
-                    <Col className={"d-flex flex-sm-wrap align-content-center p-0 justify-content-start"}>{event.date}</Col></Row>
+                    <Col className={"d-flex flex-sm-wrap align-content-center p-0 justify-content-start"}>{moment(event.date).format('DD MMMM yyyy ddd')}</Col></Row>
                     <Form.Control
                         disabled={activeDate}
                         className={`bg-dark text-bg-dark m-2 ${activeDate && 'd-none'}`}
@@ -28,7 +36,6 @@ export function EditEventForm({event, eventIndex, inputChangeHandler, activeDate
                         placeholder="Дата события"
                         onChange={(e) => {
                             inputChangeHandler(eventIndex, e.target.value, "date");
-                            console.log(event)
                         }}/>
                     <Form.Control
                         // disabled={activeName}
@@ -37,7 +44,6 @@ export function EditEventForm({event, eventIndex, inputChangeHandler, activeDate
                         value={event.name}
                         onChange={(e) => {
                             inputChangeHandler(eventIndex, e.target.value, "name");
-                            console.log(event)
                         }}
                         aria-placeholder={"Название"}/>
                     <InputGroup className={`m-2 ${activeSum && 'd-none'}`}>
@@ -48,7 +54,6 @@ export function EditEventForm({event, eventIndex, inputChangeHandler, activeDate
                             aria-label="Dollar amount (with dot and two decimal places)"
                             onChange={(e) => {
                                 inputChangeHandler(eventIndex, e.target.value, "sum");
-                                console.log(event)
                             }}
                         />
                         <InputGroup.Text className={"bg-dark text-bg-dark"}>р.</InputGroup.Text>

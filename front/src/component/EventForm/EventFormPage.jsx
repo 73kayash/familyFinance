@@ -13,11 +13,61 @@ export function EventFormPage() {
     })
     const [multiState, setMultiState] = useState({
         lastDate: moment().format('yyyy-MM-DD'),
+        workingDays: '1',
         changeDate: false,
         changeName: false,
         changeSum: false
     })
     const [eventList, setEventList] = useState([])
+    const [workingCalendar, setWorkingCalendar] = useState(new Map())
+    window.workingCalendar = workingCalendar;
+    const getWorkingCalendarData = (getDate) => {
+        fetch(`https://isdayoff.ru/api/getData?year=${getDate.format('yyyy')}&month=${getDate.format('MM')}&delimeter=,`, {
+            method: 'GET',
+            redirect: 'follow'
+        })
+            .then(response => response.text())
+            .then(result => {
+                let resArr = result.split(",");
+                setWorkingCalendar(prevState => prevState.set(getDate.format('yyyy-MM'), resArr))
+            })
+            .catch(error => console.log('error', error));
+    }
+    const refreshWorkingCalendar = (monthCount) => {
+        let getMonthCount;
+        if(monthCount < 10 || workingCalendar.size < 12) {
+            getMonthCount = 12;
+        } else if(monthCount > workingCalendar.size - 3) {
+            getMonthCount = workingCalendar.size * 2;
+        }
+        let calendarEmpty = new Map();
+        for(let i = 0; i < getMonthCount; i++) {
+            let date = moment(rootEvent.date).add(i, 'month');
+            let key = date.format('yyyy-MM');
+            let value = workingCalendar.get(key)
+            if(value === undefined) {
+                value = new Map();
+                getWorkingCalendarData(date);
+            }
+            calendarEmpty.set(key, value);
+        }
+        setWorkingCalendar(calendarEmpty);
+    }
+    const getDay = (day) => {
+        let date = moment(day);
+        let key = date.format('yyyy-MM');
+        let dayInDict = date.format('DD');
+        let dictionary = workingCalendar.get(key);
+        let result;
+        if(dictionary !== undefined) {
+            result = dictionary[dayInDict - 1];
+        }
+        if(result !== undefined && ((multiState.workingDays === '2' && result !== '0') || (multiState.workingDays === '3' && result !== '1'))) {
+            return getDay(date.subtract(1, 'day').format('yyyy-MM-DD'))
+        }else {
+            return day;
+        }
+    }
 
     useEffect(() => {
         if (rootEvent.name === "" || rootEvent.sum === "") {
@@ -39,20 +89,21 @@ export function EventFormPage() {
             return;
         }
 
+        refreshWorkingCalendar(betweenDate);
         let list = [...Array(betweenDate)];
-        for (let i = 0; i < betweenDate; i++) {
+        for (let i = 0; i <= betweenDate; i++) {
+            let day = rootDate.clone().add(i, 'month').format('yyyy-MM-DD');
+            if(multiState.changeDate && multiState.workingDays !== '1') {
+                day = getDay(day);
+            }
             list[i] = {
-                date: rootDate.clone().add(i + 1, 'month').format('yyyy-MM-DD'),
+                date: day,
                 name: rootEvent.name,
                 sum: rootEvent.sum
             };
         }
         setEventList(list);
-        // console.log(list);
-        // console.log(betweenDate);
-        // console.log(rootDate, lastDate);
-        // console.log(multiState);
-    }, [multiState])
+    }, [multiState, rootEvent])
 
     const changeMultiStateHandler = (field, value) => {
         setMultiState(prevState => ({
@@ -88,10 +139,6 @@ export function EventFormPage() {
                 {visibleParameters ?
                     <MultiEventForm changeStateHandler={changeMultiStateHandler} multiState={multiState}/> : null}
 
-                <hr/>
-            </div>
-
-            <div key={"page-body"} className={"bg-dark text-bg-dark ms-2"}>
                 <EditEventForm
                     eventIndex={0}
                     event={rootEvent}
@@ -100,6 +147,12 @@ export function EventFormPage() {
                     activeName={false}
                     activeSum={false}
                 />
+
+                <hr/>
+            </div>
+
+            <div key={"page-body"} className={"bg-dark text-bg-dark ms-2"}>
+
 
                 {eventList.map((self, index) =>
                     <EditEventForm
@@ -116,9 +169,6 @@ export function EventFormPage() {
 
             <div key={"page-footer"} className={"bg-dark text-bg-dark ms-2"}>
                 <hr/>
-                <Button variant="secondary">
-                    Сохранить
-                </Button>
             </div>
         </>
     )

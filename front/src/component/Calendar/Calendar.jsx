@@ -5,8 +5,8 @@ import {useState} from "react";
 
 
 export function Calendar() {
-    moment.updateLocale("en", {week: {dow: 1}});
     moment.updateLocale('en', {
+        week: {dow: 1},
         months: [
             "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль",
             "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"

@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {EventFormOld} from "../EventForm/EventFormOld";
 
-const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс",];
+const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const url = "http://localhost:8080/api/v1";
 
 export function Grid({currentDay}) {
@@ -98,7 +98,7 @@ export function Grid({currentDay}) {
                 fetchHandler={fetchHandler}
                 deleteHandler={deleteHandler}
             /> : null}
-            <Container className={"text-bg-dark bg-dark"}>
+            <Container className={"text-bg-dark bg-dark mb-3"}>
                 <Row key="rowDayOfWeeks" className={"text-bg-dark bg-dark"}>
                     {weekDays.map((self) => <Col key={self}>{self}</Col>)}
                 </Row>
@@ -123,6 +123,7 @@ export function Grid({currentDay}) {
                         ))
                     }
                 </div>
+                <hr/>
             </Container>
         </>
     )

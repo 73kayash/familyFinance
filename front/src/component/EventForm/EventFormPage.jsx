@@ -105,6 +105,21 @@ export function EventFormPage() {
         setEventList(list);
     }, [multiState, rootEvent])
 
+    const fetchHandler = () => {
+        let request = {
+            name: rootEvent.name,
+            events: eventList
+        }
+        fetch("http://localhost:8080/api/v1/event/multi-event", {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(request)
+        })
+            .then(() => window.location.replace("/"))
+    }
+
     const changeMultiStateHandler = (field, value) => {
         setMultiState(prevState => ({
             ...prevState,
@@ -134,7 +149,7 @@ export function EventFormPage() {
                     }}>
                         Параметры
                     </ToggleButton>
-                    <Button variant={"secondary"}>Сохранить</Button>
+                    <Button variant={"secondary"} onClick={fetchHandler} onSubmit={fetchHandler}>Сохранить</Button>
                 </ButtonGroup>
                 {visibleParameters ?
                     <MultiEventForm changeStateHandler={changeMultiStateHandler} multiState={multiState}/> : null}

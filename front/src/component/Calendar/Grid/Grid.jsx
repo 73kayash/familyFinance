@@ -1,16 +1,15 @@
 import {DaySell} from "../DaySell/DaySell";
-import {CalendarGrid} from "./GridWraper";
 import {useEffect, useState} from "react";
 import {Col, Container, Row} from "react-bootstrap";
+import {EventFormOld} from "../EventForm/EventFormOld";
 
-const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс",];
+const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const url = "http://localhost:8080/api/v1";
 
 export function Grid({currentDay}) {
     const startDay = currentDay.clone().startOf('month').startOf('week');
     const start = startDay.clone().subtract(1, 'day');
     const weeks = [...Array(6)].map(() => [...Array(7)].map(() => start.add(1, 'day').clone()));
-    // const days = [...Array(42)].map(() => start.add(1, 'day').clone());
     const queryEnd = startDay.clone().add(42, 'day');
 
     const [events, setEvents] = useState([]);
@@ -68,19 +67,19 @@ export function Grid({currentDay}) {
                 eventHandler(null);
             })
     }
-    // const deleteHandler = () => {
-    //     const fetchUrl = `${url}/event/${event.id}`;
-    //     fetch(fetchUrl, {
-    //         method: 'DELETE',
-    //         headers: {
-    //             'Content-type': 'application/json'
-    //         }
-    //     })
-    //         .then(() => {
-    //             setEvents(prevState => prevState.filter(element => element.id !== event.id));
-    //             eventHandler(null);
-    //         })
-    // }
+    const deleteHandler = () => {
+        const fetchUrl = `${url}/event/${event.id}`;
+        fetch(fetchUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then(() => {
+                setEvents(prevState => prevState.filter(element => element.id !== event.id));
+                eventHandler(null);
+            })
+    }
     const startDragHandler = (dragItem) => {
         setEvent(dragItem);
     }
@@ -92,27 +91,23 @@ export function Grid({currentDay}) {
 
     return (
         <>
-            {/*{eventFormIsVisible ? <EventFormOld*/}
-            {/*    event={event}*/}
-            {/*    eventHandler={eventHandler}*/}
-            {/*    changeTextHandler={changeTextHandler}*/}
-            {/*    fetchHandler={fetchHandler}*/}
-            {/*    deleteHandler={deleteHandler}*/}
-            {/*/> : null}*/}
-            <Container className={"text-bg-dark bg-dark"}>
+            {eventFormIsVisible ? <EventFormOld
+                event={event}
+                eventHandler={eventHandler}
+                changeTextHandler={changeTextHandler}
+                fetchHandler={fetchHandler}
+                deleteHandler={deleteHandler}
+            /> : null}
+            <Container className={"text-bg-dark bg-dark mb-3"}>
                 <Row key="rowDayOfWeeks" className={"text-bg-dark bg-dark"}>
                     {weekDays.map((self) => <Col key={self}>{self}</Col>)}
                 </Row>
-                <CalendarGrid className={"bg-light"}>
+                <div className={"bg-light"}>
                     {
                         weeks.map((week, j) => (
                             <Row key={"week" + j}>
                                 {
                                     week.map((day, i) => (
-                                        // <Col
-                                        // className={"border-1 border-dark-subtle ps-1 pe-0 bg-dark"}
-                                        // key={"columnDaySell_" + j + "_" + i}
-                                        // >
                                         <DaySell
                                             key={day.format('X')}
                                             day={day}
@@ -122,13 +117,13 @@ export function Grid({currentDay}) {
                                             isNotWorkDay={workDaysString[i + (j * 7)] === "1"}
                                             startDragHandler={startDragHandler}
                                             dropEventHandler={dropEventHandler}/>
-                                        // </Col>
                                     ))
                                 }
                             </Row>
                         ))
                     }
-                </CalendarGrid>
+                </div>
+                <hr/>
             </Container>
         </>
     )

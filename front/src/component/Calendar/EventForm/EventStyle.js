@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Calendar} from "../../App/AppStyle";
+import {CalendarDiv} from "../CalendarStyle";
 
 export const EventFormStyle = styled('div')`
     position: absolute;
@@ -13,7 +13,7 @@ export const EventFormStyle = styled('div')`
     align-items: center;
     justify-content: center;
 `
-export const EventContent = styled(Calendar)`
+export const EventContent = styled(CalendarDiv)`
     width: 320px;
     background-color: #1E1F21;
     color: #DDDDDD;
@@ -64,18 +64,18 @@ export const EventInput = styled('textarea')`
 export const EventButton = styled('button').attrs((props) => ({
     $isDeleted: props.$isDeleted
 }))`
-    height: 36px;
-    color: ${(props) => props.$isDeleted ? '#f14949' : '#dddddd'};
-    background: #1e1f21;
-    outline: unset;
-    border: solid 3px #464648;
-    border-radius: 12px;
-    cursor: pointer;
-    margin-left: 9px;
+    // height: 36px;
+    // color: ${(props) => props.$isDeleted ? '#f14949' : '#dddddd'};
+    // background: #1e1f21;
+    // outline: unset;
+    // border: solid 3px #464648;
+    // border-radius: 12px;
+    // cursor: pointer;
+    // margin-left: 9px;
     
 `
 
 export const EventRow = styled('div')`
-    display: inline-flex;
-    justify-content: center;
+    // display: inline-flex;
+    // justify-content: center;
 `

@@ -1,15 +1,15 @@
 import {DaySell} from "../DaySell/DaySell";
-import {CalendarGrid, HeaderCell, HeaderGrid} from "./GridWraper";
 import {useEffect, useState} from "react";
-import {EventForm} from "../EventForm/EventForm";
+import {Col, Container, Row} from "react-bootstrap";
+import {EventFormOld} from "../EventForm/EventFormOld";
 
-const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс",];
+const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const url = "http://localhost:8080/api/v1";
 
 export function Grid({currentDay}) {
     const startDay = currentDay.clone().startOf('month').startOf('week');
     const start = startDay.clone().subtract(1, 'day');
-    const days = [...Array(42)].map(() => start.add(1, 'day').clone());
+    const weeks = [...Array(6)].map(() => [...Array(7)].map(() => start.add(1, 'day').clone()));
     const queryEnd = startDay.clone().add(42, 'day');
 
     const [events, setEvents] = useState([]);
@@ -91,32 +91,40 @@ export function Grid({currentDay}) {
 
     return (
         <>
-            {eventFormIsVisible ? <EventForm
+            {eventFormIsVisible ? <EventFormOld
                 event={event}
                 eventHandler={eventHandler}
                 changeTextHandler={changeTextHandler}
                 fetchHandler={fetchHandler}
                 deleteHandler={deleteHandler}
             /> : null}
-            <HeaderGrid>
-                {weekDays.map((self) => <HeaderCell key={self}>{self}</HeaderCell>)}
-            </HeaderGrid>
-            <CalendarGrid>
-                {
-                    days.map((day, index) => (
-                        <DaySell
-                            key={day.format('X')}
-                            day={day}
-                            currentDay={currentDay}
-                            events={events}
-                            eventHandler={eventHandler}
-                            isNotWorkDay={workDaysString[index] === "1"}
-                            startDragHandler={startDragHandler}
-                            dropEventHandler={dropEventHandler}
-                        />
-                    ))
-                }
-            </CalendarGrid>
+            <Container className={"text-bg-dark bg-dark mb-3"}>
+                <Row key="rowDayOfWeeks" className={"text-bg-dark bg-dark"}>
+                    {weekDays.map((self) => <Col key={self}>{self}</Col>)}
+                </Row>
+                <div className={"bg-light"}>
+                    {
+                        weeks.map((week, j) => (
+                            <Row key={"week" + j}>
+                                {
+                                    week.map((day, i) => (
+                                        <DaySell
+                                            key={day.format('X')}
+                                            day={day}
+                                            currentDay={currentDay}
+                                            events={events}
+                                            eventHandler={eventHandler}
+                                            isNotWorkDay={workDaysString[i + (j * 7)] === "1"}
+                                            startDragHandler={startDragHandler}
+                                            dropEventHandler={dropEventHandler}/>
+                                    ))
+                                }
+                            </Row>
+                        ))
+                    }
+                </div>
+                <hr/>
+            </Container>
         </>
     )
 }

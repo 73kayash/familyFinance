@@ -1,37 +1,20 @@
-import './App.css';
-import moment from "moment";
-import {Grid} from '../Calendar/Grid/Grid';
-import {Calendar} from './AppStyle';
-import {Monitor} from '../Calendar/Monitor/Monitor';
-import {useState} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Header} from "../Header/Header";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import {Calendar} from "../Calendar/Calendar";
+import {EventFormPage} from "../EventForm/EventFormPage";
 
 function App() {
-
-    moment.updateLocale("en", {week: {dow: 1}});
-    moment.updateLocale('en', {
-        months: [
-            "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль",
-            "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-        ]
-    });
-    const [today, setToday] = useState(moment());
-
-    const prevHandler = () => setToday(prev => prev.clone().subtract(1, 'month'));
-    const todayHandler = () => setToday(moment());
-    const nextHandler = () => setToday(next => next.clone().add(1, 'month'));
-
     return (
-        <Calendar>
-            {/* <Header /> */}
-            <Monitor
-                today={today}
-                prevHandler={prevHandler}
-                todayHandler={todayHandler}
-                nextHandler={nextHandler}
-            />
-            <Grid currentDay={today}/>
-            {/* <Footer /> */}
-        </Calendar>
+        <div className={"text-bg-dark bg-dark min-vh-100 container"} style={{borderRadius: '15px'}}>
+            <Router>
+                <Header/>
+                <Routes>
+                    <Route exact path="/" element={<Calendar/>}/>
+                    <Route path="/createEvent" element={<EventFormPage />}/>
+                </Routes>
+            </Router>
+        </div>
     );
 }
 

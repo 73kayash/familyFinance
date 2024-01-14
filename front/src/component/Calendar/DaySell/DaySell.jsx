@@ -1,5 +1,6 @@
-import {Cell, Day, Event, NumberRow, Row} from "./DayStyle"
 import moment from "moment"
+import {Col, Row} from "react-bootstrap";
+import {Event} from "../Event/Event";
 
 export function DaySell({day, currentDay, events, eventHandler, isNotWorkDay, startDragHandler, dropEventHandler}) {
     const weekend = day.day() === 6 || day.day() === 0;
@@ -9,42 +10,38 @@ export function DaySell({day, currentDay, events, eventHandler, isNotWorkDay, st
     const cellDayEvents = events.filter((eventItem) => moment(eventItem.date).isSame(day, 'day'));
 
     return (
-        <Cell
-            $isWeekend={weekend}
+        <Col
+            className={`border border-light overflow-hidden`}
             onDragOver={e => e.preventDefault()}
             onDrop={(e) => dropEventHandler(e, day)}
+            style={{
+                aspectRatio: 1,
+                maxHeight: '130px',
+                color: anotherMonth ? '#5d5d5d' : '',
+                backgroundColor: weekend ? '#2b2f33' : '#212529'
+            }}
         >
-            <NumberRow>
-                <Day
-                    $anotherMonth={anotherMonth}
-                    $isNotWorkDay={isNotWorkDay}
-                    $currentDay={false}
-                    onClick={() => eventHandler(day)}>
-                    {isCurrentDay
-                        ? <Day
-                            $anotherMonth={false}
-                            $currentDay={true}
-                            $isNotWorkDay={isNotWorkDay}
-                        >{displayedDay}</Day>
-                        : displayedDay}
-                </Day>
-            </NumberRow>
+            <Row
+                className={'pt-2 pe-2 justify-content-end'}
+                style={{color: isCurrentDay ? 'rgb(25,135,84)' : (isNotWorkDay && !anotherMonth) && 'rgb(220, 53, 69)'}}
+                onClick={() => eventHandler(day)}>
+                {displayedDay}
+            </Row>
             {cellDayEvents.map((eventItem) => {
                 return (
                     <Row
-                        key={eventItem.id}>
+                        key={eventItem.id}
+                        className={"pe-2 ps-2 pb-sm-1"}
+                        style={{maxWidth: '85%'}}
+                    >
                         <Event
-                            draggable={true}
-                            onDragStart={() => startDragHandler(eventItem)}
-                            key={eventItem.id + day.format('X')}
-                            title={eventItem.sum + " р."}
-                            $sum={eventItem.sum > 0}
-                            onClick={() => eventHandler(eventItem)}>
-                            {eventItem.name}
-                        </Event>
+                            eventItem={eventItem}
+                            eventHandler={eventHandler}
+                            startDragHandler={startDragHandler}
+                        />
                     </Row>)
             })
             }
-        </Cell>
+        </Col>
     )
 }
